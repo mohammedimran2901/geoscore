@@ -1,4 +1,4 @@
-import { stripe, getPlanByPriceId } from '@/lib/stripe'
+import { getStripe, getPlanByPriceId } from '@/lib/stripe'
 import { createClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
@@ -11,6 +11,9 @@ export async function POST(request: Request) {
     const signature = request.headers.get('stripe-signature')!
 
     let event: Stripe.Event
+
+    // Initialize Stripe lazily
+    const stripe = getStripe()
 
     try {
       event = stripe.webhooks.constructEvent(payload, signature, webhookSecret)

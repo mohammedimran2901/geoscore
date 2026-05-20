@@ -1,5 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
-import { stripe, SUBSCRIPTION_PLANS, type PlanId } from '@/lib/stripe'
+import { getStripe, SUBSCRIPTION_PLANS, type PlanId } from '@/lib/stripe'
 import { NextResponse } from 'next/server'
 
 export async function POST(request: Request) {
@@ -27,6 +27,9 @@ export async function POST(request: Request) {
         { status: 401 }
       )
     }
+
+    // Initialize Stripe lazily
+    const stripe = getStripe()
 
     // Get or create Stripe customer
     const { data: userData } = await supabase

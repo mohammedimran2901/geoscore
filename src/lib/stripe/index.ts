@@ -1,7 +1,23 @@
 import Stripe from 'stripe'
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2026-04-22.dahlia',
+export const getStripe = () => {
+  if (!process.env.STRIPE_SECRET_KEY) {
+    throw new Error('STRIPE_SECRET_KEY is not set')
+  }
+  return new Stripe(process.env.STRIPE_SECRET_KEY, {
+    apiVersion: '2026-04-22.dahlia',
+  })
+}
+
+// For backward compatibility - lazy loaded
+let stripeInstance: Stripe | null = null
+export const stripe = new Proxy({} as Stripe, {
+  get(target, prop) {
+    if (!stripeInstance) {
+      stripeInstance = getStripe()
+    }
+    return stripeInstance[prop as keyof Stripe]
+  },
 })
 
 export const SUBSCRIPTION_PLANS = {
