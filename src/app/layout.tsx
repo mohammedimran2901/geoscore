@@ -1,3 +1,5 @@
+import './globals.css'
+
 export const metadata = {
   title: 'GEOscore - AI Search Visibility Tracker',
   description: 'Track your brand visibility across ChatGPT, Perplexity, and Google AI Overviews',
