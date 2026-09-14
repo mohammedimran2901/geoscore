@@ -19,6 +19,8 @@ import {
   Play,
   ChevronRight,
   Star,
+  Trophy,
+  Quote,
   Users,
   Globe,
   Lock
@@ -133,29 +135,6 @@ function AuthModal({ isOpen, onClose, mode = 'signup' }: { isOpen: boolean; onCl
   )
 }
 
-// Logo Marquee Component
-function LogoMarquee() {
-  const logos = ['HubSpot', 'Zendesk', 'Notion', 'Figma', 'Linear', 'Stripe', 'Vercel', 'Shopify', 'Slack', 'Discord']
-  
-  return (
-    <div className="relative overflow-hidden py-8">
-      <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-slate-950 to-transparent z-10" />
-      <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-slate-950 to-transparent z-10" />
-      
-      <div className="flex animate-marquee">
-        {[...logos, ...logos].map((logo, i) => (
-          <div key={i} className="flex-shrink-0 mx-8 flex items-center gap-2 text-slate-500">
-            <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-sm font-bold">
-              {logo[0]}
-            </div>
-            <span className="text-lg font-semibold whitespace-nowrap">{logo}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  )
-}
-
 // Bento Grid Feature Card
 function BentoCard({ title, description, icon: Icon, className = '', size = 'normal' }: { 
   title: string; 
@@ -179,7 +158,6 @@ function BentoCard({ title, description, icon: Icon, className = '', size = 'nor
 }
 
 export default function LandingPage() {
-  const [email, setEmail] = useState('')
   const [isAuthOpen, setIsAuthOpen] = useState(false)
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('signup')
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -194,13 +172,6 @@ export default function LandingPage() {
   const openAuth = (mode: 'login' | 'signup') => {
     setAuthMode(mode)
     setIsAuthOpen(true)
-  }
-
-  const handleGetStarted = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (email) {
-      openAuth('signup')
-    }
   }
 
   return (
@@ -236,6 +207,7 @@ export default function LandingPage() {
             <a href="#features" className="text-sm text-slate-400 hover:text-white transition-colors">Features</a>
             <a href="#demo" className="text-sm text-slate-400 hover:text-white transition-colors">Demo</a>
             <a href="#pricing" className="text-sm text-slate-400 hover:text-white transition-colors">Pricing</a>
+            <Link href="/leaderboard" className="text-sm text-slate-400 hover:text-white transition-colors">Leaderboard</Link>
           </div>
 
           <div className="flex items-center gap-4">
@@ -245,12 +217,12 @@ export default function LandingPage() {
             >
               Sign in
             </button>
-            <button 
-              onClick={() => openAuth('signup')}
+            <Link
+              href="/scan"
               className="px-4 py-2 bg-white text-slate-950 text-sm font-medium rounded-lg hover:bg-slate-200 transition-all hover:scale-105"
             >
-              Get Started
-            </button>
+              Scan your brand free
+            </Link>
             <button 
               className="md:hidden p-2 text-slate-400"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -266,6 +238,8 @@ export default function LandingPage() {
             <a href="#features" className="block text-slate-400 hover:text-white">Features</a>
             <a href="#demo" className="block text-slate-400 hover:text-white">Demo</a>
             <a href="#pricing" className="block text-slate-400 hover:text-white">Pricing</a>
+            <Link href="/leaderboard" className="block text-slate-400 hover:text-white">Leaderboard</Link>
+            <Link href="/scan" className="block text-blue-400 hover:text-blue-300 font-medium">Scan your brand free →</Link>
             <button onClick={() => { openAuth('login'); setMobileMenuOpen(false); }} className="block text-slate-400 hover:text-white">Sign in</button>
           </div>
         )}
@@ -277,7 +251,7 @@ export default function LandingPage() {
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 mb-8 hover:border-blue-500/40 transition-colors cursor-pointer">
             <span className="flex h-2 w-2 rounded-full bg-blue-400 animate-pulse" />
-            <span className="text-sm text-blue-300">Now tracking ChatGPT, Claude, Perplexity & Google AI</span>
+            <span className="text-sm text-blue-300">Live probes: ChatGPT & Perplexity · Claude & Google AI rolling out</span>
             <ChevronRight className="w-4 h-4 text-blue-400" />
           </div>
 
@@ -292,44 +266,38 @@ export default function LandingPage() {
           </h1>
           
           <p className="text-xl sm:text-2xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-            Track your brand visibility across AI assistants. 
-            See what ChatGPT, Perplexity, and Claude say about you.
+            Your customers ask AI assistants what to buy. Find out what those assistants say about you — 
+            free, in 60 seconds, no signup.
           </p>
 
-          {/* Email CTA */}
-          <form onSubmit={handleGetStarted} className="max-w-lg mx-auto mb-8">
-            <div className="flex flex-col sm:flex-row gap-3 p-2 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-sm">
-              <input
-                type="email"
-                placeholder="Enter your work email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="flex-1 px-4 py-3 bg-transparent text-white placeholder-slate-500 focus:outline-none text-lg"
-                required
-              />
-              <button
-                type="submit"
-                className="px-8 py-3 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-500 transition-all flex items-center justify-center gap-2 whitespace-nowrap hover:scale-105"
-              >
-                Start Free Trial
-                <ArrowRight className="w-5 h-5" />
-              </button>
-            </div>
-          </form>
-          
+          {/* Instant Scan CTA */}
+          <div className="max-w-lg mx-auto mb-8">
+            <Link
+              href="/scan"
+              className="flex items-center justify-center gap-3 px-10 py-4 bg-blue-600 text-white text-lg font-semibold rounded-2xl hover:bg-blue-500 transition-all hover:scale-105 shadow-lg shadow-blue-600/20"
+            >
+              <Zap className="w-5 h-5" />
+              Scan your brand free
+            </Link>
+            <p className="text-sm text-slate-500 mt-3">
+              No signup · ~60 seconds · You get a shareable score card
+            </p>
+          </div>
+
           <div className="flex flex-wrap justify-center gap-6 text-sm text-slate-500 mb-16">
             <span className="flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-              14-day free trial
+              Real AI answers
             </span>
             <span className="flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-              No credit card
+              Roast included
             </span>
             <span className="flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-              Cancel anytime
+              Daily monitoring from $99/mo
             </span>
+
           </div>
 
           {/* Demo Video/Image Preview */}
@@ -391,21 +359,41 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Logo Marquee */}
-      <section className="py-12 border-y border-white/5">
-        <p className="text-center text-sm text-slate-500 mb-6">Trusted by marketing teams at</p>
-        <LogoMarquee />
+      {/* Live Proof — real data instead of fake logos */}
+      <section className="py-16 border-y border-white/5">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <p className="text-sm text-slate-500 mb-6 uppercase tracking-wider">
+            No fake logos here — just live data from real AI probes
+          </p>
+          <div className="grid sm:grid-cols-3 gap-4">
+            <Link href="/scan" className="group p-6 bg-white/[0.02] border border-white/[0.08] rounded-2xl hover:border-blue-500/40 transition-all">
+              <Zap className="w-6 h-6 text-blue-400 mx-auto mb-3" />
+              <h3 className="font-semibold mb-1">Instant Scan</h3>
+              <p className="text-sm text-slate-500">Your score in 60 seconds, no signup</p>
+            </Link>
+            <Link href="/leaderboard" className="group p-6 bg-white/[0.02] border border-white/[0.08] rounded-2xl hover:border-amber-500/40 transition-all">
+              <Trophy className="w-6 h-6 text-amber-400 mx-auto mb-3" />
+              <h3 className="font-semibold mb-1">Live Leaderboard</h3>
+              <p className="text-sm text-slate-500">See who AI actually recommends</p>
+            </Link>
+            <Link href="/scan" className="group p-6 bg-white/[0.02] border border-white/[0.08] rounded-2xl hover:border-emerald-500/40 transition-all">
+              <Quote className="w-6 h-6 text-emerald-400 mx-auto mb-3" />
+              <h3 className="font-semibold mb-1">GEO Roast</h3>
+              <p className="text-sm text-slate-500">A verdict worth screenshotting</p>
+            </Link>
+          </div>
+        </div>
       </section>
 
-      {/* Stats Section */}
+      {/* What you get from a scan — real outputs */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
-              { value: '200M+', label: 'AI queries tracked', sublabel: 'and counting' },
-              { value: '4', label: 'AI engines', sublabel: 'monitored daily' },
-              { value: '10K+', label: 'Brands tracked', sublabel: 'globally' },
-              { value: '47%', label: 'Avg visibility boost', sublabel: 'in 90 days' },
+              { value: '60s', label: 'Instant scan', sublabel: 'no signup required' },
+              { value: '6', label: 'Real AI answers', sublabel: 'per free scan' },
+              { value: '0-100', label: 'Visibility score', sublabel: 'mention rate + rank' },
+              { value: '1 card', label: 'LinkedIn share card', sublabel: 'auto-generated' },
             ].map((stat) => (
               <div key={stat.label} className="text-center group">
                 <div className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent mb-2 group-hover:scale-110 transition-transform">
@@ -432,7 +420,7 @@ export default function LandingPage() {
           <div className="grid md:grid-cols-3 gap-4 auto-rows-fr">
             <BentoCard 
               title="Multi-Engine Tracking"
-              description="Monitor ChatGPT, Perplexity, Claude, and Google AI Overviews from one unified dashboard."
+              description="Daily probes of ChatGPT and Perplexity today — Claude and Google AI Overviews rolling out. One unified dashboard."
               icon={Search}
               className="md:col-span-2"
             />
@@ -486,7 +474,7 @@ export default function LandingPage() {
               {
                 step: '02',
                 title: 'We probe AI engines',
-                description: 'Our system queries ChatGPT, Perplexity, Claude, and Google AI daily.',
+                description: 'Our system asks ChatGPT and Perplexity the buying-intent questions your customers ask — daily.',
                 time: 'Auto'
               },
               {
@@ -515,60 +503,39 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Testimonials */}
+      {/* GEO Roast example — the shareable output */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">Loved by marketing teams</h2>
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">Get roasted by the machines</h2>
+            <p className="text-slate-400 text-lg">Every scan ends with a verdict you'll want to post. Example:</p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
-            {[
-              {
-                quote: "GEOscore showed us we were invisible on Perplexity. After 3 months, we're mentioned in 67% of queries.",
-                author: "Sarah Chen",
-                role: "Head of SEO, Notion",
-                score: "+47 points",
-                image: "S"
-              },
-              {
-                quote: "Finally, visibility into the black box of AI recommendations. The content suggestions alone are worth it.",
-                author: "Marcus Johnson",
-                role: "CMO, Linear",
-                score: "#1 ranking",
-                image: "M"
-              },
-              {
-                quote: "We discovered competitors were recommended 3x more often. GEOscore helped us close that gap completely.",
-                author: "Emily Rodriguez",
-                role: "VP Marketing, Vercel",
-                score: "3x visibility",
-                image: "E"
-              },
-            ].map((testimonial, i) => (
-              <div key={i} className="group p-6 bg-white/[0.02] border border-white/[0.08] rounded-2xl hover:bg-white/[0.04] hover:border-white/[0.12] transition-all">
-                <div className="flex gap-1 mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                  ))}
-                </div>
-                <p className="text-slate-300 mb-6 leading-relaxed text-lg">"{testimonial.quote}"</p>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center font-semibold">
-                      {testimonial.image}
-                    </div>
-                    <div>
-                      <div className="font-medium">{testimonial.author}</div>
-                      <div className="text-sm text-slate-500">{testimonial.role}</div>
-                    </div>
-                  </div>
-                  <span className="px-3 py-1 bg-emerald-500/20 text-emerald-400 text-sm rounded-full font-medium">
-                    {testimonial.score}
-                  </span>
-                </div>
+          <div className="relative p-8 rounded-3xl border border-amber-500/20 bg-amber-500/[0.04]">
+            <div className="flex items-center gap-2 mb-4">
+              <Quote className="w-5 h-5 text-amber-400" />
+              <span className="text-sm font-semibold uppercase tracking-wider text-amber-400">Sample GEO Roast</span>
+            </div>
+            <p className="text-xl leading-relaxed text-slate-100">
+              “ChatGPT knows your category. It just doesn't know you — it recommended your competitor twice
+              before it even got to your first letter. Perplexity, to its credit, spelled your name right. That's it.
+              That's the positive.”
+            </p>
+            <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="p-4 bg-white/5 rounded-xl flex-1 w-full">
+                <p className="text-sm font-medium text-emerald-400 mb-1">Do this next:</p>
+                <p className="text-sm text-slate-300">
+                  Get into the two comparison articles Perplexity cites — it reads them before it answers.
+                </p>
               </div>
-            ))}
+              <Link
+                href="/scan"
+                className="px-6 py-3 bg-blue-600 rounded-xl font-medium hover:bg-blue-500 transition-colors whitespace-nowrap flex items-center gap-2"
+              >
+                Get your roast
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -678,7 +645,7 @@ export default function LandingPage() {
               },
               {
                 q: "Which AI engines do you monitor?",
-                a: "We track ChatGPT (GPT-4), Perplexity AI, Claude (Anthropic), and Google AI Overviews. We're constantly adding new AI assistants as they emerge."
+                a: "We track ChatGPT and Perplexity with live probes today, with Claude and Google AI Overviews rolling out. Every new assistant that matters gets added as it emerges."
               },
               {
                 q: "How often is my visibility score updated?",
@@ -711,33 +678,30 @@ export default function LandingPage() {
             <div className="relative">
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">Ready to see your score?</h2>
               <p className="text-slate-400 text-lg mb-8 max-w-xl mx-auto">
-                Join 10,000+ brands tracking their AI presence. Start your free trial today.
+                Start with the free instant scan. Upgrade to daily monitoring when you want the delta — 
+                how your visibility changes, day by day.
               </p>
-              
-              <form onSubmit={handleGetStarted} className="max-w-md mx-auto mb-6">
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <input
-                    type="email"
-                    placeholder="Enter your work email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="flex-1 px-4 py-3 bg-slate-950/50 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required
-                  />
-                  <button
-                    type="submit"
-                    className="px-6 py-3 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-500 transition-all flex items-center justify-center gap-2 whitespace-nowrap hover:scale-105"
-                  >
-                    Start Free Trial
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
-                </div>
-              </form>
+
+              <div className="flex flex-col sm:flex-row justify-center gap-3 mb-6">
+                <Link
+                  href="/scan"
+                  className="px-8 py-3 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-500 transition-all flex items-center justify-center gap-2 hover:scale-105"
+                >
+                  Scan free — no signup
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+                <button
+                  onClick={() => openAuth('signup')}
+                  className="px-8 py-3 border border-white/20 text-white font-medium rounded-xl hover:bg-white/5 transition-colors"
+                >
+                  Start 14-day trial
+                </button>
+              </div>
               
               <div className="flex flex-wrap justify-center gap-6 text-sm text-slate-500">
                 <span className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                  14-day free trial
+                  60-second free scan
                 </span>
                 <span className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-400" />

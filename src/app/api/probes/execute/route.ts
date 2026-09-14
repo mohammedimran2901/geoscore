@@ -268,7 +268,7 @@ export async function POST(request: Request) {
       probe_query_id,
       domain_id,
       engine,
-      raw_response: rawResponse,
+      raw_response: rawResponse || '',
       brand_mentioned: analysis.brand_mentioned,
       mention_position: analysis.mention_position,
       mention_context: analysis.mention_context,

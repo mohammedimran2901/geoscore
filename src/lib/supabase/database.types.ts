@@ -249,6 +249,48 @@ export type Database = {
           },
         ]
       }
+      instant_scans: {
+        Row: {
+          id: string
+          brand: string
+          category: string
+          score: number
+          chatgpt_score: number | null
+          chatgpt_mention_rate: number | null
+          perplexity_score: number | null
+          perplexity_mention_rate: number | null
+          competitors: Json | null
+          roast: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          brand: string
+          category: string
+          score: number
+          chatgpt_score?: number | null
+          chatgpt_mention_rate?: number | null
+          perplexity_score?: number | null
+          perplexity_mention_rate?: number | null
+          competitors?: Json | null
+          roast?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          brand?: string
+          category?: string
+          score?: number
+          chatgpt_score?: number | null
+          chatgpt_mention_rate?: number | null
+          perplexity_score?: number | null
+          perplexity_mention_rate?: number | null
+          competitors?: Json | null
+          roast?: string | null
+          created_at?: string
+        }
+        Relationships: []
+      }
       content_recommendations: {
         Row: {
           id: string
